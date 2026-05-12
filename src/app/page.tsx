@@ -8,19 +8,32 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { useStore, UserRole } from "@/lib/db";
-import { LogIn, UserPlus, PackageSearch } from "lucide-react";
+import { LogIn, UserPlus, PackageSearch, KeyRound } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const router = useRouter();
   const { login } = useStore();
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<UserRole>("Student");
+  const [forgotEmail, setForgotEmail] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     login(email, role);
     router.push(role === 'Admin' ? '/dashboard/admin' : '/dashboard/student');
+  };
+
+  const handleForgotPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Reset Link Sent",
+      description: `If an account exists for ${forgotEmail}, you will receive a reset link shortly.`
+    });
+    setForgotEmail("");
   };
 
   return (
@@ -70,7 +83,42 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Password</Label>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="link" size="sm" className="px-0 font-normal h-auto">
+                            Forgot password?
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2">
+                              <KeyRound className="h-5 w-5" /> Forgot Password
+                            </DialogTitle>
+                            <DialogDescription>
+                              Enter your email address and we'll send you a link to reset your password.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <form onSubmit={handleForgotPassword}>
+                            <div className="py-4 space-y-2">
+                              <Label htmlFor="forgot-email">Email Address</Label>
+                              <Input 
+                                id="forgot-email" 
+                                type="email" 
+                                placeholder="name@university.edu" 
+                                required 
+                                value={forgotEmail}
+                                onChange={(e) => setForgotEmail(e.target.value)}
+                              />
+                            </div>
+                            <DialogFooter>
+                              <Button type="submit">Send Reset Link</Button>
+                            </DialogFooter>
+                          </form>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                     <Input 
                       id="password" 
                       type="password" 

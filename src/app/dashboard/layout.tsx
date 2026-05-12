@@ -23,7 +23,8 @@ import {
   CheckCircle, 
   LogOut, 
   ShieldAlert,
-  PackageSearch
+  PackageSearch,
+  Settings
 } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useStore } from "@/lib/db";
@@ -51,6 +52,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         { title: "Manage Items", icon: Package, href: "/dashboard/items" },
         { title: "AI Match Hub", icon: Search, href: "/dashboard/matches" },
         { title: "Verify Claims", icon: CheckCircle, href: "/dashboard/claims" },
+        { title: "System Settings", icon: Settings, href: "/dashboard/admin/settings" },
       ]
     : [
         { title: "Overview", icon: LayoutDashboard, href: "/dashboard/student" },

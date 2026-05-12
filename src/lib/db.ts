@@ -80,8 +80,8 @@ export function useStore() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [items, setItems] = useState<Item[]>([]);
-  const [categories] = useState<Category[]>(DEFAULT_CATEGORIES);
-  const [locations] = useState<Location[]>(DEFAULT_LOCATIONS);
+  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
+  const [locations, setLocations] = useState<Location[]>(DEFAULT_LOCATIONS);
   const [matches, setMatches] = useState<Match[]>([]);
   const [claims, setClaims] = useState<Claim[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -96,6 +96,9 @@ export function useStore() {
       setMatches(parsed.matches || []);
       setClaims(parsed.claims || []);
       setNotifications(parsed.notifications || []);
+      setCategories(parsed.categories || DEFAULT_CATEGORIES);
+      setLocations(parsed.locations || DEFAULT_LOCATIONS);
+      
       const savedUser = localStorage.getItem('relicsync_user');
       if (savedUser) setCurrentUser(JSON.parse(savedUser));
     }
@@ -105,10 +108,10 @@ export function useStore() {
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('relicsync_db', JSON.stringify({
-        users, items, matches, claims, notifications
+        users, items, matches, claims, notifications, categories, locations
       }));
     }
-  }, [users, items, matches, claims, notifications, isLoaded]);
+  }, [users, items, matches, claims, notifications, categories, locations, isLoaded]);
 
   const login = (email: string, role: UserRole) => {
     let user = users.find(u => u.Email === email && u.UserRole === role);
@@ -140,13 +143,6 @@ export function useStore() {
       UserID: currentUser.UserID
     };
     setItems(prev => [newItem, ...prev]);
-    
-    // Auto-create matching for admins to see (simulated trigger)
-    if (newItem.ItemStatus === 'Found') {
-      const lostItems = items.filter(i => i.ItemStatus === 'Lost' && i.CategoryID === newItem.CategoryID);
-      // We'll let the AI trigger later in the admin dashboard matching view
-    }
-
     addNotification(
       currentUser.UserID,
       `Your item "${newItem.Title}" has been reported as ${newItem.ItemStatus.toLowerCase()}.`,
@@ -209,6 +205,24 @@ export function useStore() {
     addNotification(1, "A new high-probability item match was detected.", true);
   };
 
+  const addCategory = (name: string) => {
+    const newCat: Category = { CategoryID: Date.now(), CategoryName: name };
+    setCategories(prev => [...prev, newCat]);
+  };
+
+  const removeCategory = (id: number) => {
+    setCategories(prev => prev.filter(c => c.CategoryID !== id));
+  };
+
+  const addLocation = (name: string) => {
+    const newLoc: Location = { LocationID: Date.now(), LocationName: name };
+    setLocations(prev => [...prev, newLoc]);
+  };
+
+  const removeLocation = (id: number) => {
+    setLocations(prev => prev.filter(l => l.LocationID !== id));
+  };
+
   return {
     currentUser,
     users,
@@ -225,6 +239,10 @@ export function useStore() {
     updateClaimStatus,
     updateItemStatus,
     addMatch,
+    addCategory,
+    removeCategory,
+    addLocation,
+    removeLocation,
     isLoaded
   };
 }

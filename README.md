@@ -76,8 +76,7 @@ RelicSync/
 │
 └── database/          # MySQL database files
     ├── schema.sql      # Table definitions with constraints
-    ├── sample_data.sql # Sample seed data
-    └── queries.sql     # Project SQL queries
+    └── sample_data.sql # Sample seed data
 ```
 
 ---
@@ -189,7 +188,7 @@ After running `sample_data.sql`:
 
 ## Author
 
-Built by **[Your Name]** | University Database Systems Project
+Built by **HAROON987** | University Database Systems Project
 
 ---
 

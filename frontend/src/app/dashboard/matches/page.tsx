@@ -70,7 +70,7 @@ export default function MatchesPage() {
           });
 
           if (!res.ok) {
-            console.cd d:\RelicSyncerror("AI Match API failed with status:", res.status);
+            console.error("AI Match API failed with status:", res.status);
             continue;
           }
 

@@ -1,19 +1,12 @@
--- ==================================================================================
 -- RelicSync Database Schema
--- ==================================================================================
--- Database: project
--- Engine:   MySQL 8.0+
--- Run in MySQL Workbench: source database/schema.sql
--- ==================================================================================
+-- Database: project | Engine: MySQL 8.0+
+-- Run this file first before sample_data.sql
 
 CREATE DATABASE IF NOT EXISTS project;
 USE project;
 
 
--- ==================================================================================
--- TABLE 1: Users
--- ==================================================================================
-
+-- Users table: stores student and admin accounts
 CREATE TABLE IF NOT EXISTS Users (
     UserID    INT          AUTO_INCREMENT PRIMARY KEY,
     FullName  VARCHAR(100) NOT NULL,
@@ -24,30 +17,21 @@ CREATE TABLE IF NOT EXISTS Users (
 );
 
 
--- ==================================================================================
--- TABLE 2: Categories
--- ==================================================================================
-
+-- Categories table: item type classifications
 CREATE TABLE IF NOT EXISTS Categories (
     CategoryID   INT         AUTO_INCREMENT PRIMARY KEY,
     CategoryName VARCHAR(50) UNIQUE NOT NULL
 );
 
 
--- ==================================================================================
--- TABLE 3: Locations
--- ==================================================================================
-
+-- Locations table: campus areas where items are lost or found
 CREATE TABLE IF NOT EXISTS Locations (
     LocationID   INT         AUTO_INCREMENT PRIMARY KEY,
     LocationName VARCHAR(50) UNIQUE NOT NULL
 );
 
 
--- ==================================================================================
--- TABLE 4: Items
--- ==================================================================================
-
+-- Items table: all reported lost and found items
 CREATE TABLE IF NOT EXISTS Items (
     ItemID       INT          AUTO_INCREMENT PRIMARY KEY,
     Title        VARCHAR(100) NOT NULL,
@@ -63,11 +47,8 @@ CREATE TABLE IF NOT EXISTS Items (
 );
 
 
--- ==================================================================================
--- TABLE 5: Matches
--- Note: 'IsVarified' column name matches the Java backend exactly (intentional)
--- ==================================================================================
-
+-- Matches table: AI-generated similarity matches between lost and found items
+-- Note: 'IsVarified' column name matches the Java backend exactly (intentional spelling)
 CREATE TABLE IF NOT EXISTS Matches (
     MatchID    INT       AUTO_INCREMENT PRIMARY KEY,
     LostItem   INT,
@@ -80,11 +61,8 @@ CREATE TABLE IF NOT EXISTS Matches (
 );
 
 
--- ==================================================================================
--- TABLE 6: Claims
--- Note: 'Rejectd' in ENUM matches the Java backend exactly (intentional)
--- ==================================================================================
-
+-- Claims table: ownership claim requests submitted by students
+-- Note: 'Rejectd' in ENUM matches the Java backend exactly (intentional spelling)
 CREATE TABLE IF NOT EXISTS Claims (
     ClaimID      INT  AUTO_INCREMENT PRIMARY KEY,
     ItemID       INT,
@@ -96,10 +74,7 @@ CREATE TABLE IF NOT EXISTS Claims (
 );
 
 
--- ==================================================================================
--- TABLE 7: Notifications
--- ==================================================================================
-
+-- Notifications table: automated alerts sent to students and admins
 CREATE TABLE IF NOT EXISTS Notifications (
     NotificationID INT       AUTO_INCREMENT PRIMARY KEY,
     UserID         INT,

@@ -1,45 +1,61 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ──────────────────────────────────────────
+#  RelicSync — Root .gitignore
+# ──────────────────────────────────────────
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Environment variables (NEVER commit these)
+.env
+.env.*
+!.env.example
 
-# testing
-/coverage
+# ── Java / Backend ──
+*.class
+*.jar
+!backend/lib/*.jar
+bin/
+out/
+target/
+*.war
+*.ear
 
-# next.js
-/.next/
+# ── Node / Frontend ──
+node_modules/
+.next/
 /out/
-
-# production
 /build
+.pnp
+.pnp.*
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ── Logs ──
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+*.log
 
-# vercel
-.vercel
+# ── OS Files ──
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# typescript
+# ── IDE Files ──
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ── TypeScript ──
 *.tsbuildinfo
 next-env.d.ts
 
-.genkit/*
-.env*
-
-# firebase
+# ── Firebase / GCP ──
+.firebase/
 firebase-debug.log
 firestore-debug.log
+.genkit/
+
+# ── Testing ──
+coverage/
+
+# ── Misc ──
+*.pem
+.vercel

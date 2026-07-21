@@ -1,0 +1,20 @@
+# Compiled Java class files
+*.class
+
+# Compiled output directories
+bin/
+out/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.eclipse/
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
